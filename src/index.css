@@ -1,0 +1,27 @@
+@import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
+
+
+@theme {
+
+  --font-display: "Outfit", sans-serif;
+  --color-brand-50: #F9F9F9;
+  --color-brand-100: #EBEBEB;
+  --color-brand-200: #D6D6D6;
+  --color-brand-300: #BDBDBD;
+  --color-brand-400: #9E9E9E;
+  --color-brand-500: #757575;
+  --color-brand-600: #525252;
+  --color-brand-700: #333333;
+  --color-brand-800: #1F1F1F;
+  --color-brand-900: #0F0F0F;
+  --color-brand-950: #000000;
+}
+
+@layer base {
+  body {
+    @apply bg-brand-900 text-white min-h-screen;    
+    -webkit-font-smoothing: antialiased;
+  }
+}
+

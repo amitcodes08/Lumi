@@ -21,14 +21,17 @@ const SideBar = () => {
       <div
         className={`w-full flex ${isOpen ? "justify-end px-4" : "justify-center"}`}
       >
-        <img
-          src={isOpen ? CrossIcon : MenuIcon}
-          alt="Sidebar Toggle"
-          className="h-6 w-4 dark:invert cursor-pointer select-none"
+        <button
           onClick={handleExpand}
-        />
+          className="p-2 rounded-full hover:bg-brand-200 hover:dark:bg-brand-700 transition-colors focus:outline-none"
+        >
+          <img
+            src={isOpen ? CrossIcon : MenuIcon}
+            alt="Sidebar Toggle"
+            className="h-6 w-5 dark:invert select-none"
+          />
+        </button>
       </div>
-
     </section>
   );
 };

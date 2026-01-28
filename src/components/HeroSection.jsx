@@ -1,13 +1,16 @@
 import ChatInput from "./ChatInput";
-
+import HeroText from "./HeroText";
+import useChatStore from "../store/useChatStore";
+import ChatInterface from "./ChatInterface";
 const HeroSection = () => {
+    const isChatActive = useChatStore((state) => state.isChatActive);
+
   return (
     <div className="flex flex-col items-center justify-center h-full bg-brand-100 dark:bg-brand-900 transition-colors duration-300 ">
-      <p className="md:text-4xl text-2xl font-semibold font-display text-brand-950 dark:text-white mb-4">
-        Let's make the <span className="text-brand-500">AI unboring</span>.
-      </p>
+      <HeroText />
+      {isChatActive && <ChatInterface />}
     
-      <ChatInput/>
+      <ChatInput />
     </div>
   );
 };

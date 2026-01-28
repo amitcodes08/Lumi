@@ -2,16 +2,27 @@ import lumiLogo from "../assets/lumi-logo.png";
 import ThemeToggle from "./ThemeToggle";
 import MenuIcon from "../assets/icons/menu-burger.svg";
 import { useNavigate } from "react-router";
+import useChatStore from "../store/useChatStore";
+
 
 const Navbar = () => {
   const navigate = useNavigate();
+   const isChatActive = useChatStore((state) => state.isChatActive);
+   const toggleChat = useChatStore((state) => state.toggleChat);
 
   const handleSignIn = () => {
     navigate("/login");
   };
+
+  const handleLogo = () => {
+    if(isChatActive) {
+      toggleChat();
+    }
+  };
+
   return (
     <nav className="h-16 w-full flex items-center justify-between px-6 border-b-2  border-brand-200 dark:border-brand-800 bg-brand-50 dark:bg-brand-900 transition-colors duration-300">
-      <div className="flex items-center">
+      <div onClick={handleLogo} className="flex items-center">
         <img
           src={MenuIcon}
           alt="Menu Icon"

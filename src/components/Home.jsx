@@ -4,6 +4,8 @@ import Navbar from "./Navbar";
 import SideBar from "./SideBar";
 
 const Home = () => {
+
+
   return (
     <div className="flex h-screen bg-brand-900 text-white overflow-hidden">
       <SideBar />

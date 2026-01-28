@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { Send, Mic, ChevronDown, Bot, StopCircle } from "lucide-react";
 import useChatStore from "../store/useChatStore"
+import { fetchAIResponse } from "../assistants/googleAI";
 
 
 
@@ -29,7 +30,7 @@ const ChatInput = () => {
     }
   }, [input]);
 
-  const handleSend = () => {
+  const handleSend = async () => {
     if (!input.trim()) return;
 
     addMessage({ id: Date.now(), role: "user", content: input });
@@ -38,15 +39,26 @@ const ChatInput = () => {
       toggleChat();
     }
 
-    setTimeout(() => {
-      addMessage({
-        id: Date.now() + 1,
-        role: "assistant",
-        content: "I'm processing that with " + selectedModel + "...",
-      });
-    }, 1000);
-
     setInput("");
+    
+    try {
+    const aiResponse = await fetchAIResponse(input);
+
+    addMessage({
+      id: Date.now() + 1,
+      role: "assistant",
+      content: aiResponse,
+    });
+
+  } catch (error) {
+    console.error("Lumi AI Error:", error);
+    addMessage({
+      id: Date.now() + 1,
+      role: "assistant",
+      content: "Sorry, Lumi's connection flickered. Please try again.",
+    });
+  }
+
   };
 
   const toggleListening = () => {

@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import { Send, Mic, ChevronDown, Bot, StopCircle } from "lucide-react";
 import useChatStore from "../store/useChatStore"
 import { fetchAIResponse } from "../assistants/googleAI";
+import { fetchGroqResponse } from "../assistants/groqAI";
 
 
 
@@ -17,11 +18,12 @@ const ChatInput = () => {
   const selectedModel = useChatStore((state) => state.selectedModel);
   const setSelectedModel = useChatStore((state) => state.setSelectedModel);
   const setIsLoading = useChatStore((state) => state.setIsLoading);
+  const messages = useChatStore((state) => state.messages)
 
 
   const textareaRef = useRef(null);
 
-  const models = ["Gemini Pro", "Claude 3.5", "GPT-4o", "Llama 3"];
+  const models = ["Gemini-3-Flash", "Groq", "GPT-4o", "Llama 3"];
 
   useEffect(() => {
     if (textareaRef.current) {
@@ -44,15 +46,25 @@ const ChatInput = () => {
     
     try {
       setIsLoading(true)
-    const aiResponse = await fetchAIResponse(input);
+      if(selectedModel === "Gemini-3-Flash") {
+        const aiResponse = await fetchAIResponse(input);
+        addMessage({
+          id: Date.now() + 1,
+          role: "assistant",
+          content: aiResponse,
+        });
+      }
 
-    addMessage({
-      id: Date.now() + 1,
-      role: "assistant",
-      content: aiResponse,
-    });
+      else if(selectedModel === "Groq") {
+        const groqResponse = await fetchGroqResponse(input, messages)
+        console.log(groqResponse)
+        addMessage({
+          id: Date.now() + 1,
+          role: "assistant",
+          content: groqResponse
+        })
+      }
 
-    setIsLoading(false);
 
   } catch (error) {
     console.error("Lumi AI Error:", error);
@@ -61,6 +73,9 @@ const ChatInput = () => {
       role: "assistant",
       content: "Sorry, Lumi's connection flickered. Please try again.",
     });
+    setIsLoading(false);
+  }
+  finally {
     setIsLoading(false);
   }
 

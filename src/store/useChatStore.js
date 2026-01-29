@@ -3,7 +3,7 @@ import { create } from "zustand";
 const useChatStore = create((set) => ({
   messages: [],
   isChatActive: false,
-  selectedModel: "GPT-4o",
+  selectedModel: "Gemini-3-Flash",
   isLoading: false,
 
   toggleChat: () => set((state) => ({ isChatActive: !state.isChatActive })),

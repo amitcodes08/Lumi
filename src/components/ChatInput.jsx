@@ -16,11 +16,12 @@ const ChatInput = () => {
   const toggleChat = useChatStore((state) => state.toggleChat);
   const selectedModel = useChatStore((state) => state.selectedModel);
   const setSelectedModel = useChatStore((state) => state.setSelectedModel);
+  const setIsLoading = useChatStore((state) => state.setIsLoading);
 
 
   const textareaRef = useRef(null);
 
-  const models = ["GPT-4o", "Claude 3.5", "Gemini Pro", "Llama 3"];
+  const models = ["Gemini Pro", "Claude 3.5", "GPT-4o", "Llama 3"];
 
   useEffect(() => {
     if (textareaRef.current) {
@@ -42,6 +43,7 @@ const ChatInput = () => {
     setInput("");
     
     try {
+      setIsLoading(true)
     const aiResponse = await fetchAIResponse(input);
 
     addMessage({
@@ -50,6 +52,8 @@ const ChatInput = () => {
       content: aiResponse,
     });
 
+    setIsLoading(false);
+
   } catch (error) {
     console.error("Lumi AI Error:", error);
     addMessage({
@@ -57,6 +61,7 @@ const ChatInput = () => {
       role: "assistant",
       content: "Sorry, Lumi's connection flickered. Please try again.",
     });
+    setIsLoading(false);
   }
 
   };

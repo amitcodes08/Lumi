@@ -9,6 +9,7 @@ const Navbar = () => {
   const navigate = useNavigate();
    const isChatActive = useChatStore((state) => state.isChatActive);
    const toggleChat = useChatStore((state) => state.toggleChat);
+   const setMessage = useChatStore((state) => state.setMessage);
 
   const handleSignIn = () => {
     navigate("/login");
@@ -16,7 +17,8 @@ const Navbar = () => {
 
   const handleLogo = () => {
     if(isChatActive) {
-      toggleChat();
+      toggleChat();      
+      setMessage();
     }
   };
 

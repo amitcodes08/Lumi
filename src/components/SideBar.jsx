@@ -12,7 +12,7 @@ const SideBar = () => {
   return (
     <section
       className={`
-        h-full bg-brand-100 dark:bg-brand-900 border-r border-brand-200 dark:border-brand-700 
+        h-full bg-brand-50 dark:bg-brand-900 border-r border-brand-200 dark:border-brand-700 
         py-4 transition-all duration-300 ease-in-out
         hidden md:flex flex-col 
         ${isOpen ? "md:w-64" : "md:w-16 items-center"}

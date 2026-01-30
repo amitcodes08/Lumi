@@ -30,12 +30,6 @@ const ChatInterface = () => {
       style={{ height: "calc(100vh - 160px)" }}
     >
       <div className="max-w-3xl mx-auto flex flex-col gap-8">
-        {messages.length === 0 && !isLoading ? (
-          <div className="flex flex-col items-center justify-center h-64 text-brand-400">
-            <p className="text-xl font-medium">Lumi is ready to assist you.</p>
-          </div>
-        ) : (
-          <>
             {messages.map((msg, index) => (
               <div
                 key={msg.id || index}
@@ -66,7 +60,7 @@ const ChatInterface = () => {
                 </div>
 
                 {msg.role === "user" && (
-                  <div className="w-10 h-10 rounded-full bg-brand-200 dark:bg-brand-700 flex items-center justify-center text-brand-200 shrink-0">
+                  <div className="w-10 h-10 rounded-full dark:bg-brand-700 flex items-center justify-center dark:text-brand-200  bg-brand-600 shrink-0">
                     <User size={20} />
                   </div>
                 )}
@@ -95,8 +89,6 @@ const ChatInterface = () => {
               ref={bottomRef}
               className={`${isChatActive ? "h-48" : "h-12"} w-full transition-all duration-300`}
             />
-          </>
-        )}
       </div>
     </div>
   );

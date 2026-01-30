@@ -1,27 +1,32 @@
 import useChatStore from "../store/useChatStore";
 import { useRef, useEffect } from "react";
-import lumilogo from "../assets/lumi-logo.png"
-import {User} from "lucide-react"
+import lumilogo from "../assets/lumi-logo.png";
+import { User } from "lucide-react";
 
 const ChatInterface = () => {
-  // console.log("ChatInterface Rendered");
+  const messages = useChatStore((state) => state.messages);
+  const isLoading = useChatStore((state) => state.isLoading);
+  const isChatActive = useChatStore((state) => state.isChatActive);
 
- const messages = useChatStore((state) => state.messages);
- const isLoading = useChatStore((state) => state.isLoading);
+  const lastMessageContent = messages[messages.length - 1]?.content;
 
+  const scrollRef = useRef(null);
   const bottomRef = useRef(null);
 
-  useEffect(() => {
+  const scrollToBottom = () => {
     if (bottomRef.current) {
-      const timeoutId = setTimeout(() => {
-        bottomRef.current.scrollIntoView({ behavior: "smooth" });
-      }, 100);
-      return () => clearTimeout(timeoutId);
+      bottomRef.current.scrollIntoView({ behavior: "smooth", block: "end" });
     }
-  }, [messages.length, isLoading]); 
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages.length, lastMessageContent, isLoading]);
+
   return (
     <div
-      className="flex-1 overflow-y-auto px-4 pt-24 pb-12 custom-scrollbar bg-transparent"
+      ref={scrollRef}
+      className="flex-1 overflow-y-auto px-4 pt-24 custom-scrollbar bg-transparent scroll-smooth"
       style={{ height: "calc(100vh - 160px)" }}
     >
       <div className="max-w-3xl mx-auto flex flex-col gap-8">
@@ -31,15 +36,19 @@ const ChatInterface = () => {
           </div>
         ) : (
           <>
-            {messages.map((msg) => (
+            {messages.map((msg, index) => (
               <div
-                key={msg.id}
-                className={`flex w-full gap-4 ${msg.role === "user" ? "justify-end" : "justify-start"}`}
+                key={msg.id || index}
+                className={`flex w-full gap-4 animate-msg ${
+                  msg.role === "user" ? "justify-end" : "justify-start"
+                }`}
               >
+
                 {msg.role === "assistant" && (
                   <div className="w-10 h-10 rounded-full bg-brand-600 flex items-center justify-center shadow-lg shrink-0 overflow-hidden">
                     <img
                       src={lumilogo}
+                      alt="Lumi"
                       className="w-full h-full object-cover"
                     />
                   </div>
@@ -50,7 +59,7 @@ const ChatInterface = () => {
                   ${
                     msg.role === "user"
                       ? "bg-brand-600 text-white rounded-tr-none"
-                      : "bg-white dark:bg-brand-800 text-brand-900 dark:text-brand-950 border border-brand-100 dark:border-brand-700 rounded-tl-none glass-morphism"
+                      : "bg-white dark:bg-brand-800 text-brand-900 dark:text-brand-50 border border-brand-100 dark:border-brand-700 rounded-tl-none glass-morphism"
                   }`}
                 >
                   <p className="whitespace-pre-wrap">{msg.content}</p>
@@ -69,11 +78,11 @@ const ChatInterface = () => {
                 <div className="relative w-10 h-10 rounded-full bg-brand-600 flex items-center justify-center shadow-lg shrink-0 overflow-hidden">
                   <img
                     src={lumilogo}
+                    alt="Lumi Loading"
                     className="w-full h-full object-cover animate-pulse"
                   />
                   <div className="absolute inset-0 border-2 border-t-white border-transparent rounded-full animate-spin" />
                 </div>
-
                 <div className="bg-white dark:bg-brand-800 px-5 py-3 rounded-2xl rounded-tl-none glass-morphism border border-brand-100 dark:border-brand-700 flex gap-1 items-center">
                   <span className="w-2 h-2 bg-brand-400 rounded-full animate-bounce [animation-delay:-0.3s]"></span>
                   <span className="w-2 h-2 bg-brand-400 rounded-full animate-bounce [animation-delay:-0.15s]"></span>
@@ -82,7 +91,10 @@ const ChatInterface = () => {
               </div>
             )}
 
-            <div ref={bottomRef} className="h-1" />
+            <div
+              ref={bottomRef}
+              className={`${isChatActive ? "h-48" : "h-12"} w-full transition-all duration-300`}
+            />
           </>
         )}
       </div>
@@ -90,4 +102,4 @@ const ChatInterface = () => {
   );
 };
 
-export default ChatInterface
+export default ChatInterface;

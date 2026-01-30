@@ -59,14 +59,14 @@ const ChatInterface = () => {
                   ${
                     msg.role === "user"
                       ? "bg-brand-600 text-white rounded-tr-none"
-                      : "bg-white dark:bg-brand-800 text-brand-900 dark:text-brand-50 border border-brand-100 dark:border-brand-700 rounded-tl-none glass-morphism"
+                      : "bg-white dark:bg-brand-800 text-brand-900 dark:text-brand-700 border border-brand-100 dark:border-brand-700 rounded-tl-none glass-morphism"
                   }`}
                 >
                   <p className="whitespace-pre-wrap">{msg.content}</p>
                 </div>
 
                 {msg.role === "user" && (
-                  <div className="w-10 h-10 rounded-full bg-brand-200 dark:bg-brand-700 flex items-center justify-center text-brand-600 shrink-0">
+                  <div className="w-10 h-10 rounded-full bg-brand-200 dark:bg-brand-700 flex items-center justify-center text-brand-200 shrink-0">
                     <User size={20} />
                   </div>
                 )}

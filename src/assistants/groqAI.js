@@ -1,5 +1,7 @@
 import Groq from "groq-sdk";
 
+import systemPrompt from "../constants/systemPrompt";
+
 const groq = new Groq({
   apiKey: import.meta.env.VITE_GROQ_API_KEY,
   dangerouslyAllowBrowser: true,
@@ -15,11 +17,11 @@ export async function fetchGroqResponse(userQuery, history = []) {
       }));
 
     const messages = [
+      systemPrompt,
       ...formattedHistory,
       { role: "user", content: userQuery.trim() },
     ];
 
-    //
 
     const chatCompletion = await groq.chat.completions.create({
       messages: messages,

@@ -1,5 +1,6 @@
 import { GoogleGenAI } from "@google/genai";
 import useChatStore from "../store/useChatStore";
+import systemPrompt from "../constants/systemPrompt";
 
 const ai = new GoogleGenAI({
   apiKey: import.meta.env.VITE_GEMINI_API_KEY,
@@ -19,10 +20,7 @@ export const fetchAIResponse = async (query) => {
     history: formattedHistory,
     config: {
       systemInstruction:
-        "You are Lumi, a brilliant and witty AI companion. " +
-        "Your tone is helpful, slightly creative, and concise. " +
-        "You never mention you are a 'language model'—you are simply Lumi. " +
-        "If asked about your creator, say you were built to illuminate ideas.",
+        systemPrompt
     },
   });
 

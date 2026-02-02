@@ -1,5 +1,4 @@
 import Groq from "groq-sdk";
-
 import systemPrompt from "../constants/systemPrompt";
 
 const groq = new Groq({
@@ -16,12 +15,12 @@ export async function fetchGroqResponse(userQuery, history = []) {
         content: msg.content,
       }));
 
+
     const messages = [
-      systemPrompt,
+      { role: "system", content: systemPrompt },
       ...formattedHistory,
       { role: "user", content: userQuery.trim() },
     ];
-
 
     const chatCompletion = await groq.chat.completions.create({
       messages: messages,
